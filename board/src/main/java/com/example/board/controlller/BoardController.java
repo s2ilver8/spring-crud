@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.board.common.ResultUtil;
 import com.example.board.dto.BoardDto;
 import com.example.board.form.BoardForm;
 import com.example.board.service.BoardService;
@@ -23,33 +24,36 @@ public class BoardController {
 	
 	// 목록 페이지 이동
 	@RequestMapping(value = "/boardList")
-	public String getBoardList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return "/board/boardList";
-	}
+	public String boardList(HttpServletRequest request, HttpServletResponse response) throws Exception {       
+        return "board/boardList";
+    }
 	
 	// 목록 조회
 	@RequestMapping(value = "/getBoardList")
 	@ResponseBody
-	public List<BoardDto> getBoardList(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
-		List<BoardDto> boardList = boardService.getBoardList(boardForm);
-	
-		return boardList;
-	}
+	public ResultUtil getBoardList(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
+		 
+        ResultUtil resultUtils = boardService.getBoardList(boardForm);
+ 
+        return resultUtils;
+    }
 	
 	// 상세 페이지 이동
 	@RequestMapping(value = "/boardDetail")
-	public String boardDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String boardDetail(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        
 		return "board/boardDetail";
-	}
+    }
 	
 	// 상세 조회
 	@RequestMapping(value = "/getBoardDetail")
 	@ResponseBody
 	public BoardDto getBoardDetail(HttpServletRequest request, HttpServletResponse response, BoardForm boardForm) throws Exception {
-		BoardDto boardDto = boardService.getBoardDetail(boardForm);
-		
-		return boardDto;
-	}
+		 
+        BoardDto boardDto = boardService.getBoardDetail(boardForm);
+ 
+        return boardDto;
+    }
 	
 	// 작성 페이지 이동
     @RequestMapping( value = "/boardWrite")

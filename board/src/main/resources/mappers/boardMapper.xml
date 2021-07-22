@@ -3,24 +3,35 @@
  
 <mapper namespace="com.example.board.boardMapper">
  
-    <select id="getBoardList" parameterType="com.example.board.form.BoardForm" resultType="com.example.board.dto.BoardDto">
+   <select id="getBoardList" parameterType="com.example.board.form.BoardForm" resultType="com.example.board.dto.BoardDto">
     
-        SELECT BOARD_SEQ 
-             , BOARD_RE_REF 
-             , BOARD_RE_LEV 
-             , BOARD_RE_SEQ 
-             , BOARD_WRITER 
-             , BOARD_SUBJECT 
-             , BOARD_CONTENT 
-             , BOARD_HITS
-             , DEL_YN 
-             , INS_USER_ID
-             , CAST( DATE_FORMAT( INS_DATE, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS INS_DATE
-             , UPD_USER_ID
-             , CAST( DATE_FORMAT( UPD_DATE, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS UPD_DATE  
-        FROM BOARD.TB_BOARD
-        ORDER BY BOARD_SEQ DESC
+        SELECT *
+    	FROM ( 
+	            SELECT BOARD_SEQ 
+	                 , BOARD_RE_REF 
+	                 , BOARD_RE_LEV 
+	                 , BOARD_RE_SEQ 
+	                 , BOARD_WRITER 
+	                 , BOARD_SUBJECT 
+	                 , BOARD_CONTENT 
+	                 , BOARD_HITS
+	                 , DEL_YN 
+	                 , INS_USER_ID
+	                 , CAST( DATE_FORMAT( INS_DATE, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS INS_DATE
+	                 , UPD_USER_ID
+	                 , CAST( DATE_FORMAT( UPD_DATE, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS UPD_DATE  
+	           FROM BOARD.TB_BOARD
+	           ORDER BY BOARD_RE_REF DESC, BOARD_RE_SEQ ASC
+	          ) T1
+	    LIMIT #{limit} OFFSET #{offset}
     
+    </select>
+    
+    <select id="getBoardCount" parameterType="com.example.board.form.BoardForm" resultType="int">
+    	
+    	SELECT COUNT(*)
+    	FROM BOARD.TB_BOARD
+    	
     </select>
     
     <delete id="updateBoardHits" parameterType="com.example.board.form.BoardForm">
@@ -34,7 +45,7 @@
     </delete>
     
     <select id="getBoardDetail" parameterType="com.example.board.form.BoardForm" resultType="com.example.board.dto.BoardDto">
-    
+        
         SELECT BOARD_SEQ 
              , BOARD_RE_REF 
              , BOARD_RE_LEV 
@@ -49,47 +60,79 @@
              , UPD_USER_ID
              , CAST( DATE_FORMAT( UPD_DATE, '%Y-%m-%d %H:%i:%s' ) AS CHAR(19) ) AS UPD_DATE  
         FROM BOARD.TB_BOARD
-        WHERE BOARD_SEQ = #{board_seq}
-    
+        WHERE BOARD_SEQ = #{board_seq}        
+              
     </select>
     
     <insert id="insertBoard" parameterType="com.example.board.form.BoardForm">
+        
+        INSERT 
+        INTO BOARD.TB_BOARD 
+        (
+                BOARD_RE_REF
+              , BOARD_RE_LEV
+              , BOARD_RE_SEQ
+              , BOARD_WRITER
+              , BOARD_SUBJECT
+              , BOARD_CONTENT
+              , INS_USER_ID
+              , INS_DATE
+              , UPD_USER_ID
+              , UPD_DATE
+        ) 
+        VALUES 
+        (
+              0
+            , 0
+            , 0
+            , #{board_writer}
+            , #{board_subject}
+            , #{board_content}
+            , 'NONMEMBER'
+            , NOW() 
+            , 'NONMEMBER'
+            , NOW() 
+        )
+            
+    </insert>
+        
+    <insert id="insertBoardFail" parameterType="com.example.board.form.BoardForm">
     
         INSERT 
-          INTO BOARD.TB_BOARD 
-             (
-                  BOARD_RE_REF
-                  , BOARD_RE_LEV
-                  , BOARD_RE_SEQ
-                  , BOARD_WRITER
-                  , BOARD_SUBJECT
-                  , BOARD_CONTENT
-                  , INS_USER_ID
-                  , INS_DATE
-                  , UPD_USER_ID
-                  , UPD_DATE
-              ) 
+        INTO BOARD.TB_BOARD 
+        (
+                BOARD_RE_REF
+              , BOARD_RE_LEV
+              , BOARD_RE_SEQ
+              , BOARD_WRITER
+              , BOARD_SUBJECT
+              , BOARD_CONTENT
+              , INS_USER_ID
+              , INS_DATE
+              , UPD_USER_ID
+              , UPD_DATE
+        ) 
         VALUES 
-             (
-                 0
-                , 0
-                , 0
-                , #{board_writer}
-                , #{board_subject}
-                , #{board_content}
-                , 'NONMEMBER'
-                , NOW() 
-                , 'NONMEMBER'
-                , NOW() 
-              )
+        (
+              0
+            , 0
+            , 0
+            , #{board_writer1}
+            , #{board_subject}
+            , #{board_content}
+            , 'NONMEMBER'
+            , NOW() 
+            , 'NONMEMBER'
+            , NOW() 
+        )
     
     </insert>
-    
+        
     <delete id="deleteBoard" parameterType="com.example.board.form.BoardForm">
     
         DELETE 
-          FROM BOARD.TB_BOARD 
-         WHERE BOARD_SEQ = #{board_seq}
+        FROM BOARD.TB_BOARD 
+        WHERE BOARD_SEQ = #{board_seq}
     
     </delete>
     

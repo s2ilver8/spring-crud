@@ -18,6 +18,10 @@ public class BoardDao {
 	
 	private static final String NAMESPACE = "com.example.board.boardMapper";
 	
+	// 목록 수
+	public int getBoardCount(BoardForm boardForm) throws Exception {		
+        return sqlSession.selectOne(NAMESPACE + ".getBoardCount", boardForm);
+    }
 	
 	// 목록 조회
 	public List<BoardDto> getBoardList(BoardForm boardForm) throws Exception {
@@ -40,6 +44,11 @@ public class BoardDao {
 	// 등록
     public int insertBoard(BoardForm boardForm) throws Exception {
         return sqlSession.insert(NAMESPACE + ".insertBoard", boardForm);
+    }
+    
+    // 트랜잭션 테스트(등록 실패) 
+    public int insertBoardFail(BoardForm boardForm) throws Exception {
+        return sqlSession.insert(NAMESPACE + ".insertBoardFail", boardForm);
     }
 	
 	// 삭제

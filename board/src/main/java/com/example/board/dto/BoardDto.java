@@ -2,7 +2,9 @@ package com.example.board.dto;
 
 import java.util.Date;
 
-public class BoardDto {
+import com.example.board.common.CommonDto;
+
+public class BoardDto extends CommonDto {
 	
 	int board_seq;
     int board_re_ref;
