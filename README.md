@@ -14,6 +14,6 @@ spring MVC Project를 이용하여 간단한 게시판을 만드는 과정
 
 # 4. 사용방법
 ## Frontend
->cd my-app1
->npm run serve1
+>cd my-app
+>npm run serve
 ![readme](https://user-images.githubusercontent.com/78801639/126726067-5f63c9e9-cb6d-4efc-977d-d0ca3af84193.PNG)
